@@ -18,11 +18,11 @@ Make sure you have the following installed on your machine:
 
 1. Clone the repository or download it locally.  
    - git clone https://github.com/Sagar0753/SIH-Hackathon-2k25.git
-   cd SIH-Hackathon-2k25/CSVJSON
+   - cd SIH-Hackathon-2k25/CSVJSON
 
 2. Install dependencies:
    - npm install
-   - 
+
 ## Running the App
 To start the server:
    - node server.js
