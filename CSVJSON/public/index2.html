@@ -1,0 +1,167 @@
+<!-- With 10 Rows Preview HTML File... -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload CSV/JSON</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      .dropzone {
+        border: 3px dashed #4caf50;
+        padding: 40px;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        width: 400px;
+      }
+      .dropzone.dragover {
+        background: #f0fff0;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 20px;
+        width: 80%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: left;
+      }
+      th {
+        background: #f9f9f9;
+      }
+      #uploadBtn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #uploadBtn:disabled {
+        background: #aaa;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Upload CSV/JSON to MongoDB Atlas</h2>
+
+    <div class="dropzone" id="dropzone">
+      <p>Drag & Drop CSV/JSON file here or click to select</p>
+      <input type="file" id="fileInput" hidden />
+    </div>
+
+    <div id="preview"></div>
+    <button id="uploadBtn" disabled>Upload to Database</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+      const dropzone = document.getElementById("dropzone");
+      const fileInput = document.getElementById("fileInput");
+      const previewDiv = document.getElementById("preview");
+      const uploadBtn = document.getElementById("uploadBtn");
+
+      let selectedFile = null;
+
+      dropzone.addEventListener("click", () => fileInput.click());
+      dropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+      dropzone.addEventListener("dragleave", () =>
+        dropzone.classList.remove("dragover")
+      );
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+        handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener("change", (e) =>
+        handleFile(e.target.files[0])
+      );
+
+      function handleFile(file) {
+        if (!file) return;
+        selectedFile = file;
+
+        const ext = file.name.split(".").pop().toLowerCase();
+        previewDiv.innerHTML = "<p>Loading preview...</p>";
+
+        if (ext === "csv") {
+          Papa.parse(file, {
+            header: true,
+            complete: function (results) {
+              showPreview(results.data.slice(0, 10)); // first 10 rows
+            },
+          });
+        } else if (ext === "json") {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            try {
+              const json = JSON.parse(e.target.result);
+              showPreview(Array.isArray(json) ? json.slice(0, 10) : [json]);
+            } catch {
+              previewDiv.innerHTML = "<p style='color:red'>Invalid JSON</p>";
+            }
+          };
+          reader.readAsText(file);
+        } else {
+          previewDiv.innerHTML =
+            "<p style='color:red'>Only CSV/JSON supported</p>";
+          selectedFile = null;
+        }
+
+        uploadBtn.disabled = false;
+      }
+
+      function showPreview(data) {
+        if (!data.length) {
+          previewDiv.innerHTML = "<p>No data found</p>";
+          return;
+        }
+
+        let table = "<table><thead><tr>";
+        Object.keys(data[0]).forEach((col) => {
+          table += `<th>${col}</th>`;
+        });
+        table += "</tr></thead><tbody>";
+
+        data.forEach((row) => {
+          table += "<tr>";
+          Object.values(row).forEach((val) => {
+            table += `<td>${val}</td>`;
+          });
+          table += "</tr>";
+        });
+
+        table += "</tbody></table>";
+        previewDiv.innerHTML = table;
+      }
+
+      uploadBtn.addEventListener("click", () => {
+        if (!selectedFile) return;
+
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => alert(data.message || data.error))
+          .catch(() => alert("Upload failed"));
+      });
+    </script>
+  </body>
+</html>
