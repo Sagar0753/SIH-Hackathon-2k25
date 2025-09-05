@@ -1,0 +1,68 @@
+<!-- Without Preview Feature HTML File... -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Upload CSV/JSON</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+      }
+      .dropzone {
+        border: 3px dashed #4caf50;
+        padding: 40px;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .dropzone.dragover {
+        background: #f0fff0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropzone" id="dropzone">
+      <p>Drag & Drop CSV/JSON file here or click to upload</p>
+      <input type="file" id="fileInput" hidden />
+    </div>
+    <script>
+      const dropzone = document.getElementById("dropzone");
+      const fileInput = document.getElementById("fileInput");
+
+      dropzone.addEventListener("click", () => fileInput.click());
+      dropzone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropzone.classList.add("dragover");
+      });
+      dropzone.addEventListener("dragleave", () =>
+        dropzone.classList.remove("dragover")
+      );
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("dragover");
+        handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener("change", (e) =>
+        handleFile(e.target.files[0])
+      );
+
+      function handleFile(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => alert(data.message || data.error))
+          .catch((err) => alert("Upload failed"));
+      }
+    </script>
+  </body>
+</html>
+
