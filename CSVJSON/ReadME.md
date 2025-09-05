@@ -31,13 +31,15 @@ By default, it should serve the app at `http://localhost:3000`.
 
 ## File Structure
 
-   CSVJSON/
-      ├── public/
-      │ ├── index.html
-      │ └── index2.html
-      ├── server.js
-      ├── package.json
-      ├── package-lock.json
-      └── README.md
+```text
+CSVJSON/
+├── public/
+│   ├── index.html
+│   └── index2.html
+├── server.js
+├── package.json
+├── package-lock.json
+└── README.md
+```
 
-Made with ❤️ by Parth
+### Made with ❤️ by Parth
