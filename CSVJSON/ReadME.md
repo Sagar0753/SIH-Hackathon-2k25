@@ -30,10 +30,11 @@ To start the server:
 By default, it should serve the app at `http://localhost:3000`.
 
 ## File Structure
+
 CSVJSON/
 ├── public/
-│   ├── index.html
-│   └── index2.html
+│ ├── index.html
+│ └── index2.html
 ├── server.js
 ├── package.json
 ├── package-lock.json
