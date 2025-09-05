@@ -16,7 +16,7 @@ Make sure you have the following installed on your machine:
 
 ##  Setup & Install
 
-1. Clone the repository or download it locally.  
+1. Clone the repository or download it locally. (Terminal)
    - git clone https://github.com/Sagar0753/SIH-Hackathon-2k25.git
    - cd SIH-Hackathon-2k25/CSVJSON
 
@@ -39,4 +39,4 @@ CSVJSON/
 ├── package-lock.json
 └── README.md
 
-Made with &heart; by Parth
+Made with ❤️ by Parth
