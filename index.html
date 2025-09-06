@@ -4,16 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AiQuatic Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
+      padding: 0%;
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0752b5, #3e9cee, #86d5f2);
+      font-family: 'Merienda', cursive;
+      background: linear-gradient(0deg, #ccf9ff,#7ce8ff,#55d0ff,#00acdf,#0080bf);
       color: white;
     }
 
@@ -85,7 +88,7 @@
   <div class="upload-box">
     <label for="file-upload">Choose File</label>
     <input type="file" id="file-upload" onchange="showFileName()">
-    <span class="file-name">Upload Here</span>
+    <span class="file-name">Upload Your File Here!</span>
     <button>Upload</button>
   </div>
 
@@ -93,7 +96,7 @@
     function showFileName() {
       const fileInput = document.getElementById("file-upload");
       const fileNameSpan = document.querySelector(".file-name");
-      fileNameSpan.textContent = fileInput.files.length ? fileInput.files[0].name : "Upload Here";
+      fileNameSpan.textContent = fileInput.files.length ? fileInput.files[0].name : "Upload Your File Here!";
     }
   </script>
   
