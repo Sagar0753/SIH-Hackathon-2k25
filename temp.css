@@ -1,4 +1,5 @@
-/* Reset */
+
+
 * {
   margin: 0;
   padding: 0;
@@ -92,7 +93,7 @@ body {
   transition: color 0.3s ease;
 }
 .sidebar ul li a:hover {
-  background: rgba(0,102,204,0.1);
+  background: rgba(169, 192, 217, 0.1);
   color: #0066cc;
   transform: translateX(5px);
   box-shadow: inset 3px 0px 0px #0066cc;
@@ -106,7 +107,7 @@ body {
   margin: 0px 0 20px 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }
 /* Active Sidebar Link */
 .sidebar ul li a.active {
@@ -150,7 +151,7 @@ body {
 }
 
 .upload-box:hover {
-  background: #f8faff;
+  background: #d0e3f7;
   border-color: #123e9c;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
