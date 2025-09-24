@@ -6,8 +6,20 @@
   <title>AiQuatic Labs</title>
   <link rel="stylesheet" href="sih.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<!-- Search Modal -->
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <button class="hamburger"><i class="fas fa-bars"></i></button>
+    <div class="logo">AiQuatic Labs</div>
+    <div class="header-icons">
+      <button><i class="fas fa-search"></i></button>
+      <button><i class="fas fa-moon"></i></button>
+    </div>
+
+    <!-- Search Modal -->
 <div id="searchModal" class="search-modal">
   <div class="search-box">
     <input type="text" placeholder="Search data, species, locations..." id="searchInput">
@@ -19,39 +31,42 @@
     </div>
  </div>
 </div>
-<body>
-  <!-- Header -->
-<header class="site-header">
-  <button class="hamburger"><i class="fas fa-bars"></i></button>
-  <div class="logo">AiQuatic Labs</div>
-  <div class="header-icons">
-    <button><i class="fas fa-search"></i></button>
-    <button><i class="fas fa-moon"></i></button>
-  </div>
-</header>
+
+  </header>
 
   <!-- Sidebar -->
   <aside>
     <nav class="sidebar">
       <ul>
-        <li><a href="#" class="active"><i class="fas fa-database"></i> Data Upload & Visualization</a></li>
-        <li><a href="#"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-        <li><a href="#"><i class="fas fa-water"></i> Ocean Parameters</a></li>
-        <li><a href="#"><i class="fas fa-fish"></i> Fish Taxonomy</a></li>
-        <li><a href="#"><i class="fas fa-dna"></i> DNA / eDNA</a></li>
+        <li><a href="#" data-target="dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li><a href="#" data-target="ocean"><i class="fas fa-water"></i> Ocean Parameters</a></li>
+        <li><a href="#" data-target="taxonomy"><i class="fas fa-fish"></i> Fish Taxonomy</a></li>
+        <li><a href="#" data-target="dna"><i class="fas fa-dna"></i> DNA / eDNA</a></li>
+        <li><a href="#" data-target="upload-section"><i class="fas fa-database"></i> Data Upload & Visualization</a></li>
+
       </ul>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main class="upload-section">
-    <section class="upload-card">
-      <!-- Section Header -->
-      <header class="section-title">
-        <h3><i class="fas fa-database"></i> Data Upload & Visualization</h3>
-      </header>
+  <!-- === Dashboard Section === -->
+  <main class="dashboard section">
+    <section class="cards">
+      <div class="card"><div class="icon"><i class="fas fa-thermometer-half"></i></div><div><h3>Avg. Ocean Temperature</h3><p>22.3°C <span class="down">▼ 1.9°C</span></p></div></div>
+      <div class="card"><div class="icon"><i class="fas fa-tint"></i></div><div><h3>Avg. Salinity</h3><p>34.2 PSU <span class="down">▼ 1 PSU</span></p></div></div>
+      <div class="card"><div class="icon"><i class="fas fa-fish"></i></div><div><h3>Species Recorded</h3><p>2863 <span class="up">▲ 16</span></p></div></div>
+      <div class="card"><div class="icon"><i class="fas fa-dna"></i></div><div><h3>DNA Samples</h3><p>15988 <span class="up">▲ 56</span></p></div></div>
+    </section>
 
-      <!-- Upload Box -->
+    <section class="charts">
+      <div class="chart-box"><h3>Ocean Temperature Trends <button class="export-btn">Export</button></h3><canvas id="tempChart"></canvas></div>
+      <div class="chart-box"><h3>Species Count by Region <button class="export-btn">Export</button></h3><canvas id="speciesChart"></canvas></div>
+    </section>
+  </main>
+
+  <!-- === Data Upload Section === -->
+  <main class="upload-section section" style="display:none;">
+    <section class="upload-card">
+      <header class="section-title"><h3><i class="fas fa-database"></i> Data Upload </h3></header>
       <div id="dropArea" class="upload-box">
         <i class="fa fa-cloud-upload"></i>
         <b><p>Drag & Drop your file here</p></b>
@@ -62,6 +77,40 @@
         <button id="uploadBtn" hidden>Upload</button>
         <div class="success-message" id="uploadMsg"></div>
       </div>
+    </section>
+
+    <section class="upload-card">
+      <header class="section-title"><h3><i class="fas fa-chart-bar"></i> Quick Visualization </h3></header>
+      <div id="visualizationBox" class="upload-box visualization-box">
+        <p>Your data visualization will appear here after upload.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- === Ocean Parameters Section === -->
+  <main class="ocean section" style="display:none;">
+    <header class="section-title"><h3><i class="fas fa-water"></i> Ocean Parameters</h3></header>
+    <section class="charts">
+      <div class="chart-box"><h3>Salinity Levels <button class="export-btn">Export</button></h3><canvas id="salinityChart"></canvas></div>
+      <div class="chart-box"><h3>pH Levels <button class="export-btn">Export</button></h3><canvas id="phChart"></canvas></div>
+    </section>
+  </main>
+
+  <!-- === Fish Taxonomy Section === -->
+  <main class="taxonomy section" style="display:none;">
+    <header class="section-title"><h3><i class="fas fa-fish"></i> Fish Taxonomy</h3></header>
+    <section class="charts">
+      <div class="chart-box"><h3>Fish Families <button class="export-btn">Export</button></h3><canvas id="fishChart"></canvas></div>
+      <div class="chart-box"><h3>Population by Habitat <button class="export-btn">Export</button></h3><canvas id="habitatChart"></canvas></div>
+    </section>
+  </main>
+
+  <!-- === DNA/eDNA Section === -->
+  <main class="dna section" style="display:none;">
+    <header class="section-title"><h3><i class="fas fa-dna"></i> DNA / eDNA Analysis</h3></header>
+    <section class="charts">
+      <div class="chart-box"><h3>DNA Samples Over Time <button class="export-btn">Export</button></h3><canvas id="dnaChart"></canvas></div>
+      <div class="chart-box"><h3>eDNA by Region <button class="export-btn">Export</button></h3><canvas id="ednaChart"></canvas></div>
     </section>
   </main>
 
